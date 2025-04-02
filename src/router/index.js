@@ -16,6 +16,14 @@ const routes = [
         path: "/",
         name: "Home",
         component: () => import("@/layout/index.vue"),
+        // children: [
+        //     {
+        //         path: "dashboard", // 子路由，不要加 `/`
+        //         name: "Dashboard",
+        //         component: () => import("@/views/dashboard.vue"),
+        //     },
+        // ]
+        
         
     },
 ];
