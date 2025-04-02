@@ -1,0 +1,17 @@
+// 抽屉组件
+.custom-drawer__content{
+    padding: 20px;
+    box-sizing: border-box;
+    border-top: 1px solid #dcdfe6;
+    border-bottom: 1px solid #dcdfe6;
+    height: 84vh;
+}
+.custom-drawer__footer{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    justify-content: flex-end;
+}
