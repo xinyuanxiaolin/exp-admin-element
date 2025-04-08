@@ -9,6 +9,7 @@
                 <main class="main-container">
                     <transition name="fade-transform" mode="out-in">
                         <router-view></router-view>
+                        
                     </transition>
                 </main>
             </el-main>

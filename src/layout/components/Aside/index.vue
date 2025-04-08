@@ -1,8 +1,8 @@
 <template>
     <aside class="aside-container" :style="{ width: asideWidth }">
         <div class="logo">
-            <span v-if="isCollapse">EPS</span>
-            <span v-else>express管理系统</span>
+            <span v-if="isCollapse">CMS</span>
+            <span v-else>短剧站群后台管理系统</span>
         </div>
         <el-menu
             class="menu"

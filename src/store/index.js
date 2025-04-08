@@ -60,7 +60,7 @@ export default new Vuex.Store({
 
 export const loadView = (view) => {
     // 路由懒加载
-    return (resolve) => require([`@/views${view}`], resolve);
+    return () => import(`@/views${view}.vue`);
 };
 // 根据角色权限控制菜单
 export const menuAuthPerm = (state, item) => {
