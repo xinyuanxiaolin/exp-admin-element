@@ -56,6 +56,7 @@
   </template>
   
   <script>
+  import { duishouVideoInfo } from "@/api/duishou";
   export default {
     name: "VideoInfoTable",
     data() {
@@ -78,8 +79,7 @@
           page_size: this.pageSize,
           ...this.filters
         };
-        this.$axios
-          .get("/duishou/video_info", { params })
+        duishouVideoInfo(params)
           .then((res) => {
             this.tableData = res.data.data;
             this.total = res.data.total;
