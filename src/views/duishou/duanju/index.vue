@@ -39,7 +39,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="update_time" label="视频更新时间" width="180" />
-        <el-table-column prop="batch_time" label="爬取时间" width="120" />
+        <el-table-column prop="batch_time" label="爬取时间" width="180" />
       </el-table>
   
       <!-- 分页 -->
