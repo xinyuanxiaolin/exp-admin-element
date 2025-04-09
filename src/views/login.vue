@@ -25,7 +25,7 @@ export default {
         return{
             form: {
                 username: 'admin',
-                password: '123456'
+                password: ''
             },
             rules: {
                 username: [
