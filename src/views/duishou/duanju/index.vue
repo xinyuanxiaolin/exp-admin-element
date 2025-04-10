@@ -1,59 +1,46 @@
 <template>
-    <div>
-      <!-- 筛选条件 -->
-      <el-form :inline="true" size="small" class="filter-form">
-        <el-form-item label="平台">
-          <el-select v-model="filters.platform_name" placeholder="选择平台" clearable>
-            <el-option
-              v-for="item in platformOptions"
-              :key="item"
-              :label="item"
-              :value="item"
-            />
-          </el-select>
-        </el-form-item>
-  
-        <el-form-item label="爬取日期">
-          <el-date-picker
-            v-model="filters.batch_time"
-            type="date"
-            placeholder="选择日期"
-            format="yyyy-MM-dd"
-            value-format="yyyy-MM-dd"
-            clearable
-          />
-        </el-form-item>
-  
-        <el-form-item>
-          <el-button type="primary" @click="fetchData">查询</el-button>
-        </el-form-item>
-      </el-form>
-  
-      <!-- 数据表格 -->
-      <el-table :data="tableData" border stripe style="width: 100%">
-        <el-table-column prop="platform_name" label="平台" width="120" />
-        <el-table-column prop="title" label="标题" />
-        <el-table-column prop="link" label="链接" width="250">
-          <template slot-scope="scope">
-            <a :href="scope.row.link" target="_blank">{{ scope.row.link }}</a>
-          </template>
-        </el-table-column>
-        <el-table-column prop="update_time" label="视频更新时间" width="180" />
-        <el-table-column prop="batch_time" label="爬取时间" width="180" />
-      </el-table>
-  
-      <!-- 分页 -->
-      <div class="pagination" style="text-align: right; margin-top: 10px;">
-        <el-pagination
-          layout="prev, pager, next, total"
-          :total="total"
-          :current-page="page"
-          :page-size="pageSize"
-          @current-change="handlePageChange"
-        />
-      </div>
+  <div>
+    <!-- 筛选条件 -->
+    <el-form :inline="true" size="small" class="filter-form">
+      <el-form-item label="平台">
+        <el-select v-model="filters.platform_name" placeholder="选择平台" clearable>
+          <el-option v-for="item in platformOptions" :key="item" :label="item" :value="item" />
+        </el-select>
+      </el-form-item>
+
+      <el-form-item label="爬取日期">
+        <el-date-picker v-model="filters.batch_time" type="date" placeholder="选择日期" format="yyyy-MM-dd"
+          value-format="yyyy-MM-dd" clearable />
+      </el-form-item>
+      <el-form-item label="标题">
+        <el-input v-model="filters.search_name" placeholder="请输入标题关键词" clearable @keyup.enter.native="fetchData" />
+      </el-form-item>
+
+      <el-form-item>
+        <el-button type="primary" @click="fetchData">查询</el-button>
+      </el-form-item>
+    </el-form>
+
+    <!-- 数据表格 -->
+    <el-table :data="tableData" border stripe style="width: 100%">
+      <el-table-column prop="platform_name" label="平台" width="120" />
+      <el-table-column prop="title" label="标题" />
+      <el-table-column prop="link" label="链接" width="250">
+        <template slot-scope="scope">
+          <a :href="scope.row.link" target="_blank">{{ scope.row.link }}</a>
+        </template>
+      </el-table-column>
+      <el-table-column prop="update_time" label="视频更新时间" width="180" />
+      <el-table-column prop="batch_time" label="爬取时间" width="180" />
+    </el-table>
+
+    <!-- 分页 -->
+    <div class="pagination" style="text-align: right; margin-top: 10px;">
+      <el-pagination layout="prev, pager, next, total" :total="total" :current-page="page" :page-size="pageSize"
+        @current-change="handlePageChange" />
     </div>
-  </template>
+  </div>
+</template>
   
   <script>
   import { duishouVideoInfo } from "@/api/duishou";
