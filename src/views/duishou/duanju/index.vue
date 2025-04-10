@@ -36,8 +36,15 @@
 
     <!-- 分页 -->
     <div class="pagination" style="text-align: right; margin-top: 10px;">
-      <el-pagination layout="prev, pager, next, total" :total="total" :current-page="page" :page-size="pageSize"
-        @current-change="handlePageChange" />
+      <el-pagination
+        layout="sizes, prev, pager, next, total"
+        :total="total"
+        :current-page="page"
+        :page-size="pageSize"
+        :page-sizes="[10, 20, 50, 100]"
+        @current-change="handlePageChange"
+        @size-change="handleSizeChange"
+      />
     </div>
   </div>
 </template>
@@ -79,7 +86,13 @@
       handlePageChange(newPage) {
         this.page = newPage;
         this.fetchData();
+      },
+      handleSizeChange(newSize) {
+        this.pageSize = newSize;
+        this.page = 1; // 重置到第一页
+        this.fetchData();
       }
+
     },
     mounted() {
       this.fetchData();
