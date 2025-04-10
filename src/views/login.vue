@@ -1,7 +1,7 @@
 <template>
     <div class="login-wrapper">
         <div class="login-form">
-            <div class="title">express后台管理系统</div>
+            <div class="title">短剧站群后台管理系统</div>
             <el-form ref="form" :model="form" :rules="rules">
                 <el-form-item prop="username">
                     <el-input v-model="form.username" placeholder="请输入账号" prefix-icon="el-icon-user"></el-input>
