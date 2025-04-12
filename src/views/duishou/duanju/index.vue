@@ -30,8 +30,8 @@
           <a :href="scope.row.link" target="_blank">{{ scope.row.link }}</a>
         </template>
       </el-table-column>
-      <el-table-column prop="update_time" label="视频更新时间" width="180" />
-      <el-table-column prop="batch_time" label="爬取时间" width="180" />
+      <el-table-column prop="update_time" label="入库时间" width="180" />
+      <el-table-column prop="batch_time" label="最近爬取时间" width="180" />
     </el-table>
 
     <!-- 分页 -->
