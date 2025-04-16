@@ -5,3 +5,8 @@ import { getAction, deleteAction, putAction, postAction } from "@/api/manage";
 export function getSiteTimeout(params) {
     return getAction("/zhanqun/site_timeout", params);
 }
+
+//获取站群蜘蛛情况
+export function getSpider(params) {
+    return getAction("/zhanqun/get_spider",params);
+}
