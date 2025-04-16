@@ -22,8 +22,15 @@
         </el-select>
       </el-form-item>
 
+      <el-form-item label="访问次数排序">
+        <el-select v-model="filters.by_count" placeholder="默认" clearable>
+          <el-option label="升序" value="asc" />
+          <el-option label="降序" value="desc" />
+        </el-select>
+      </el-form-item>
+
       <el-form-item>
-        <el-button type="primary" @click="fetchData">查询</el-button>
+        <el-button type="primary" @click="handleSearch">查询</el-button>
       </el-form-item>
     </el-form>
 
@@ -45,17 +52,16 @@
     </el-table>
 
     <div style="text-align: right; margin-top: 20px;">
-    <el-pagination
-      background
-      layout="sizes, prev, pager, next, jumper, ->, total"
-      :total="total"
-      :current-page.sync="pagination.page"
-      :page-size.sync="pagination.page_size"
-      :page-sizes="[10, 20, 50, 100]"
-      @current-change="fetchData"
-      @size-change="handleSizeChange"
-    />
-
+      <el-pagination
+        background
+        layout="sizes, prev, pager, next, jumper, ->, total"
+        :total="total"
+        :current-page.sync="pagination.page"
+        :page-size.sync="pagination.page_size"
+        :page-sizes="[10, 20, 50, 100]"
+        @current-change="fetchData"
+        @size-change="handleSizeChange"
+      />
     </div>
   </div>
 </template>
@@ -71,6 +77,7 @@ export default {
         domain: '',
         date: '',
         spider_type: null,
+        by_count: '', // 新增：访问次数排序
       },
       pagination: {
         page: 1,
@@ -88,10 +95,12 @@ export default {
         domain: this.filters.domain,
         date: this.filters.date,
         type: this.filters.spider_type,
+        by_count: this.filters.by_count, // 新增参数
         page: this.pagination.page,
         page_size: this.pagination.page_size,
-      }
-      getSpider(params).then((response) => {
+      };
+      getSpider(params)
+        .then((response) => {
           const { total, data } = response.data;
           this.tableData = data;
           this.total = total;
@@ -104,17 +113,20 @@ export default {
           this.loading = false;
         });
     },
-    getSpiderTypeLabel(type) {
-      if (type === "1") return '头条';
-      if (type === "2") return '百度';
-      return '未知';
-    },
     handleSizeChange(size) {
       this.pagination.page_size = size;
       this.pagination.page = 1; // 重置为第一页
       this.fetchData();
     },
-
+    handleSearch() {
+      this.pagination.page = 1; // 查询时重置页码
+      this.fetchData();
+    },
+    getSpiderTypeLabel(type) {
+      if (type === 1 || type === "1") return '头条';
+      if (type === 2 || type === "2") return '百度';
+      return '未知';
+    },
   },
   mounted() {
     this.fetchData();
