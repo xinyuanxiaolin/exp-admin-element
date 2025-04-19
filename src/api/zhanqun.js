@@ -10,3 +10,7 @@ export function getSiteTimeout(params) {
 export function getSpider(params) {
     return getAction("/zhanqun/get_spider",params);
 }
+//站群头条收录情况
+export function getSiteShoulu(params) {
+    return getAction("/zhanqun/site_shoulu",params)
+}
