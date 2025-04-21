@@ -6,13 +6,7 @@
       </el-form-item>
 
       <el-form-item label="日期">
-        <el-date-picker
-          v-model="filters.date"
-          type="date"
-          placeholder="选择日期"
-          value-format="yyyy-MM-dd"
-          clearable
-        />
+        <el-date-picker v-model="filters.date" type="date" placeholder="选择日期" value-format="yyyy-MM-dd" clearable />
       </el-form-item>
 
       <el-form-item label="蜘蛛类别">
@@ -34,12 +28,7 @@
       </el-form-item>
     </el-form>
 
-    <el-table
-      v-loading="loading"
-      :data="tableData"
-      border
-      style="width: 100%; margin-top: 20px;"
-    >
+    <el-table v-loading="loading" :data="tableData" border style="width: 100%; margin-top: 20px;">
       <el-table-column prop="domain" label="域名" />
       <el-table-column prop="type" label="蜘蛛类别">
         <template slot-scope="scope">
@@ -47,21 +36,16 @@
         </template>
       </el-table-column>
       <el-table-column prop="count" label="访问次数" />
+      <el-table-column prop="shoulu_all" label="总收录" /> <!-- 新增的列 -->
       <el-table-column prop="created_time" label="日期" />
       <el-table-column prop="updated_time" label="脚本爬取时间" />
     </el-table>
 
+
     <div style="text-align: right; margin-top: 20px;">
-      <el-pagination
-        background
-        layout="sizes, prev, pager, next, jumper, ->, total"
-        :total="total"
-        :current-page.sync="pagination.page"
-        :page-size.sync="pagination.page_size"
-        :page-sizes="[10, 20, 50, 100]"
-        @current-change="fetchData"
-        @size-change="handleSizeChange"
-      />
+      <el-pagination background layout="sizes, prev, pager, next, jumper, ->, total" :total="total"
+        :current-page.sync="pagination.page" :page-size.sync="pagination.page_size" :page-sizes="[10, 20, 50, 100]"
+        @current-change="fetchData" @size-change="handleSizeChange" />
     </div>
   </div>
 </template>
