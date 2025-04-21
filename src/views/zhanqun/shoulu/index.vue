@@ -16,32 +16,54 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="fetchData">搜索</el-button>
+        <el-button type="primary" @click="searchData">搜索</el-button>
         <el-button @click="resetFilters">重置</el-button>
-        <el-button type="success" @click="exportAll">导出全部</el-button>
-        <el-button type="warning" @click="exportWeek">导出周收</el-button>
+
+        <!-- 下拉导出按钮 -->
+        <el-dropdown @command="handleExport">
+          <el-button type="success" class="ml-10">
+            导出<i class="el-icon-arrow-down el-icon--right"></i>
+          </el-button>
+          <el-dropdown-menu slot="dropdown" >
+            <el-dropdown-item command="all">导出全部</el-dropdown-item>
+            <el-dropdown-item command="week">导出周收</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </el-form-item>
     </el-form>
 
     <!-- 数据表格 -->
-    <el-table :data="tableData" border style="margin-top: 20px;">
+    <el-table
+      :data="tableData"
+      border
+      style="margin-top: 20px;"
+      @sort-change="handleSortChange"
+    >
       <el-table-column prop="site_name" label="网站名" width="200" />
       <el-table-column prop="title" label="标题" />
-      <el-table-column prop="shoulu_time" label="收录时间" width="180" />
+      <el-table-column prop="shoulu_time" label="收录时间" width="180" sortable="custom" />
       <el-table-column prop="update_time" label="更新时间" width="180" />
     </el-table>
 
     <!-- 分页 -->
-    <el-pagination background layout="total, sizes, prev, pager, next, jumper" :current-page="pagination.page"
-      :page-size="pagination.page_size" :page-sizes="[10, 20, 50, 100]" :total="pagination.total"
-      @current-change="handlePageChange" @size-change="handleSizeChange"
-      style="margin-top: 20px; text-align: center;" />
+    <el-pagination
+      background
+      layout="total, sizes, prev, pager, next, jumper"
+      :current-page="pagination.page"
+      :page-size="pagination.page_size"
+      :page-sizes="[10, 20, 50, 100]"
+      :total="pagination.total"
+      @current-change="handlePageChange"
+      @size-change="handleSizeChange"
+      style="margin-top: 20px; text-align: center;"
+    />
   </div>
 </template>
 
 <script>
 import { getSiteShoulu } from "@/api/zhanqun.js";
 import { exportShouluAll, exportShouluWeek } from "@/api/export.js";
+
 export default {
   name: 'SiteShouluList',
   data() {
@@ -56,6 +78,8 @@ export default {
         page_size: 10,
         total: 0
       },
+      sortProp: '',
+      sortOrder: '',
       tableData: []
     }
   },
@@ -67,7 +91,9 @@ export default {
       const params = {
         ...this.filters,
         page: this.pagination.page,
-        page_size: this.pagination.page_size
+        page_size: this.pagination.page_size,
+        sort_field: this.sortProp,
+        sort_order: this.sortOrder
       }
 
       try {
@@ -78,6 +104,10 @@ export default {
         this.$message.error('获取数据失败')
       }
     },
+    searchData() {
+      this.pagination.page = 1
+      this.fetchData()
+    },
     handlePageChange(newPage) {
       this.pagination.page = newPage
       this.fetchData()
@@ -87,31 +117,42 @@ export default {
       this.pagination.page = 1
       this.fetchData()
     },
+    handleSortChange({ prop, order }) {
+      this.sortProp = prop
+      this.sortOrder = order === 'ascending' ? 'asc' : 'desc'
+      this.pagination.page = 1
+      this.fetchData()
+    },
     resetFilters() {
       this.filters = {
         site_name: '',
         title: '',
         shoulu_type: null
       }
+      this.sortOrder = ""
+      this.sortProp = ""
       this.pagination.page = 1
       this.fetchData()
+    },
+    handleExport(command) {
+      if (command === 'all') {
+        this.exportAll()
+      } else if (command === 'week') {
+        this.exportWeek()
+      }
     },
     async exportAll() {
       try {
         const response = await exportShouluAll();
-        // 检查返回的 response.data 是否为 Blob 类型
         if (response instanceof Blob) {
-          // 创建 Blob 对象并下载
           const blob = response;
           const link = document.createElement('a');
           const objectURL = URL.createObjectURL(blob);
           link.href = objectURL;
-          link.download = 'shoulu_all.xlsx'; // 下载的文件名
+          link.download = 'shoulu_all.xlsx';
           link.click();
-          // 释放对象 URL
           URL.revokeObjectURL(objectURL);
         } else {
-          // 如果返回的数据不是 Blob 类型，可能是错误信息，尝试读取错误消息
           const reader = new FileReader();
           reader.onload = () => {
             const json = JSON.parse(reader.result);
@@ -121,25 +162,21 @@ export default {
         }
       } catch (err) {
         console.log(err)
-        this.$message.error('导出失败！'); 
+        this.$message.error('导出失败！');
       }
     },
-
-
     async exportWeek() {
       try {
         const response = await exportShouluWeek();
-        // 获取响应的 Blob 数据并触发下载
         const blob = new Blob([response], {
           type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         })
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
-        link.download = `shoulu_week_${Date.now()}.xlsx`;  // 下载的文件名
+        link.download = `shoulu_week_${Date.now()}.xlsx`;
         link.click();
       } catch (err) {
         this.$message.error('导出失败！')
-
       }
     }
   }
@@ -149,5 +186,8 @@ export default {
 <style scoped>
 .app-container {
   padding: 20px;
+}
+.ml-10 {
+  margin-left: 10px;
 }
 </style>
