@@ -36,7 +36,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="count" label="访问次数" />
-      <el-table-column prop="shoulu_all" label="总收录" /> <!-- 新增的列 -->
+      <el-table-column prop="shoulu_all" label="头条总收录" /> <!-- 新增的列 -->
       <el-table-column prop="created_time" label="日期" />
       <el-table-column prop="updated_time" label="脚本爬取时间" />
     </el-table>
