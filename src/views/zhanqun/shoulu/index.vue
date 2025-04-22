@@ -63,7 +63,7 @@
 <script>
 import { getSiteShoulu } from "@/api/zhanqun.js";
 import { exportShouluAll, exportShouluWeek } from "@/api/export.js";
-
+import debounce  from 'lodash/throttle';
 export default {
   name: 'SiteShouluList',
   data() {
@@ -83,11 +83,19 @@ export default {
       tableData: []
     }
   },
+  created() {
+    // 确保只触发最后一次
+    this.debouncedFetchData = debounce(this.fetchData, 500, {
+      leading: false,
+      trailing: true
+    })
+  },
   mounted() {
     this.fetchData()
   },
   methods: {
     async fetchData() {
+      console.log('最终请求：', this.sortProp, this.sortOrder, new Date().toISOString())
       const params = {
         ...this.filters,
         page: this.pagination.page,
@@ -119,9 +127,9 @@ export default {
     },
     handleSortChange({ prop, order }) {
       this.sortProp = prop
-      this.sortOrder = order === 'ascending' ? 'asc' : 'desc'
+      this.sortOrder = order === 'ascending' ? 'asc' : order === 'descending' ? 'desc' : ''
       this.pagination.page = 1
-      this.fetchData()
+      this.debouncedFetchData()
     },
     resetFilters() {
       this.filters = {
