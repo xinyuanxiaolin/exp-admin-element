@@ -25,6 +25,15 @@
 
       <el-form-item>
         <el-button type="primary" @click="handleSearch">查询</el-button>
+        <!-- 下拉导出按钮 -->
+        <el-dropdown @command="handleExport">
+          <el-button type="success" class="ml-10">
+            导出<i class="el-icon-arrow-down el-icon--right"></i>
+          </el-button>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item command="all">导出全部</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </el-form-item>
     </el-form>
 
@@ -52,7 +61,7 @@
 
 <script>
 import { getSpider } from "@/api/zhanqun.js";
-
+import { exportSpiderAll } from "@/api/export.js";
 export default {
   name: 'SpiderStatistics',
   data() {
@@ -111,9 +120,43 @@ export default {
       if (type === 2 || type === "2") return '百度';
       return '未知';
     },
+    handleExport(command) {
+      if (command === 'all') {
+        this.exportAll()
+      }
+    },
+    async exportAll() {
+      try {
+        const response = await exportSpiderAll();
+        if (response instanceof Blob) {
+          const blob = response;
+          const link = document.createElement('a');
+          const objectURL = URL.createObjectURL(blob);
+          link.href = objectURL;
+          link.download = 'spider.xlsx';
+          link.click();
+          URL.revokeObjectURL(objectURL);
+        } else {
+          const reader = new FileReader();
+          reader.onload = () => {
+            const json = JSON.parse(reader.result);
+            this.$message.error(`导出失败：${json.message || '服务器错误'}`);
+          };
+          reader.readAsText(response.data);
+        }
+      } catch (err) {
+        console.log(err)
+        this.$message.error('导出失败！');
+      }
+    },
   },
   mounted() {
     this.fetchData();
   },
 };
 </script>
+<style scoped>
+.ml-10 {
+  margin-left: 10px;
+}
+</style>

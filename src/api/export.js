@@ -13,3 +13,8 @@ export function exportShouluWeek() {
     return downFile("/shoulu/export/week", null);
 
 }
+
+//导出蜘蛛数据
+export function exportSpiderAll() {
+    return downFile("/spider/export/all", null);
+}
