@@ -22,6 +22,12 @@
           <el-option label="降序" value="desc" />
         </el-select>
       </el-form-item>
+      <el-form-item label="只显示盗版">
+        <el-select v-model="filters.daoban" placeholder="全部" clearable>
+          <el-option label="是" :value="1" />
+          <el-option label="否" :value="0" />
+        </el-select>
+      </el-form-item>
 
       <el-form-item>
         <el-button type="primary" @click="handleSearch">查询</el-button>
@@ -71,6 +77,7 @@ export default {
         date: '',
         spider_type: null,
         by_count: '', // 新增：访问次数排序
+        daoban:''
       },
       pagination: {
         page: 1,
@@ -91,6 +98,7 @@ export default {
         by_count: this.filters.by_count, // 新增参数
         page: this.pagination.page,
         page_size: this.pagination.page_size,
+        daoban:this.filters.daoban
       };
       getSpider(params)
         .then((response) => {
