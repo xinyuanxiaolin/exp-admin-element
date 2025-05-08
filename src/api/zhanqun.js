@@ -14,3 +14,7 @@ export function getSpider(params) {
 export function getSiteShoulu(params) {
     return getAction("/zhanqun/site_shoulu",params)
 }
+//站群蜘蛛路径情况
+export function getSpiderLogs(params) {
+    return getAction("/zhanqun/spider/get_log",params)
+}
