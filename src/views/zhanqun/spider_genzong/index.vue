@@ -55,14 +55,14 @@
       <el-table-column prop="ip" label="蜘蛛ip" />
       <el-table-column prop="referer" label="来源路径">
         <template slot-scope="scope">
-          <a :href="scope.row.referer.startsWith('http') ? scope.row.referer : 'http://' + scope.row.referer"
+          <a :href="scope.row.referer"
             target="_blank">{{ scope.row.referer }}</a>
         </template>
       </el-table-column>
 
       <el-table-column prop="url" label="访问路径">
         <template slot-scope="scope">
-          <a :href="scope.row.referer.startsWith('http') ? scope.row.url : 'http://' + scope.row.url"
+          <a :href="'http://' + scope.row.url"
           target="_blank">{{ scope.row.url }}</a>
         </template>
       </el-table-column>
