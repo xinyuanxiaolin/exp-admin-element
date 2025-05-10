@@ -23,6 +23,12 @@
           <el-option label="百度" :value="2" />
         </el-select>
       </el-form-item>
+      <el-form-item label="只显示盗版">
+        <el-select v-model="filters.daoban" placeholder="全部" clearable>
+          <el-option label="是" :value="1" />
+          <el-option label="否" :value="0" />
+        </el-select>
+      </el-form-item>
 
       <!-- <el-form-item label="根据抓取时间排序">
           <el-select v-model="filters.host" placeholder="默认" clearable>
@@ -91,7 +97,8 @@
           type: null,
           referer: '',
           url: '',
-          catch_time: ''
+          catch_time: '',
+          daoban:''
         },
         pagination: {
           page: 1,
@@ -112,6 +119,7 @@
           url:this.filters.url,
           referer: this.filters.referer,
           catch_time: this.filters.catch_time,
+          daoban: this.filters.daoban,
           page: this.pagination.page,
           page_size: this.pagination.page_size,
         };

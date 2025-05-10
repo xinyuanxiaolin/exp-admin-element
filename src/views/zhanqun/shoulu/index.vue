@@ -15,6 +15,12 @@
           <el-option label="月收" :value="3" />
         </el-select>
       </el-form-item>
+      <el-form-item label="只显示盗版">
+        <el-select v-model="filters.daoban" placeholder="全部" clearable>
+          <el-option label="是" :value="1" />
+          <el-option label="否" :value="0" />
+        </el-select>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="searchData">搜索</el-button>
         <el-button @click="resetFilters">重置</el-button>
@@ -71,7 +77,8 @@ export default {
       filters: {
         site_name: '',
         title: '',
-        shoulu_type: null
+        shoulu_type: null,
+        daoban: ''
       },
       pagination: {
         page: 1,
